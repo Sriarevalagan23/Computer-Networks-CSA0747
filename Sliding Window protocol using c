@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+
+#define MAX_FRAMES 10
+#define WINDOW_SIZE 4
+
+int main() {
+    int frame = 0, ack = 0;
+    int window[WINDOW_SIZE];
+
+    printf("Sliding Window Protocol: Sender\n");
+
+    while (frame < MAX_FRAMES) {
+        int send_count = 0;
+        while (send_count < WINDOW_SIZE && (frame + send_count) < MAX_FRAMES) {
+            printf("Sending Frame %d\n", frame + send_count);
+            window[send_count] = frame + send_count;  
+            send_count++;
+        }
+        printf("Waiting for ACK...\n");
+        sleep(1);
+        printf("Acknowledgment received for Frame %d\n", window[0]);
+        frame++;
+    }
+
+    printf("All frames sent successfully.\n");
+    return 0;
+}
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define MAX_FRAMES 10
+
+int main() {
+    int ack = 0;
+
+    printf("Sliding Window Protocol: Receiver\n");
+
+    while (ack < MAX_FRAMES) {
+        printf("Receiving Frame %d\n", ack);
+        printf("Sending Acknowledgment for Frame %d\n", ack);
+        ack++;
+
+        sleep(1);  
+    }
+
+    printf("All frames received and acknowledged successfully.\n");
+    return 0;
+}
