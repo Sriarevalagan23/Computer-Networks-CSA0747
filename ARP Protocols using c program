@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_ENTRIES 5
+#define IP_SIZE 16
+#define MAC_SIZE 18
+
+struct arp_entry {
+    char ip_address[IP_SIZE];
+    char mac_address[MAC_SIZE];
+};
+
+struct arp_entry arp_table[MAX_ENTRIES] = {
+    {"192.168.0.1", "00:1A:2B:3C:4D:5E"},
+    {"192.168.0.2", "00:1A:2B:3C:4D:5F"},
+    {"192.168.0.3", "00:1A:2B:3C:4D:60"},
+    {"192.168.0.4", "00:1A:2B:3C:4D:61"},
+    {"192.168.0.5", "00:1A:2B:3C:4D:62"}
+};
+
+char* arp_lookup(char *ip_address) {
+    for (int i = 0; i < MAX_ENTRIES; i++) {
+        if (strcmp(arp_table[i].ip_address, ip_address) == 0) {
+            return arp_table[i].mac_address;
+        }
+    }
+    return NULL;
+}
+
+int main() {
+    char ip_address[IP_SIZE];
+    
+    printf("Enter IP address to resolve: ");
+    scanf("%s", ip_address);
+    char *mac_address = arp_lookup(ip_address);
+
+    if (mac_address) {
+        printf("MAC Address for IP %s is %s\n", ip_address, mac_address);
+    } else {
+        printf("IP address %s not found in ARP table.\n", ip_address);
+    }
+
+    return 0;
+}
