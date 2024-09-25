@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_SIZE 100
+
+// Function to perform bit stuffing
+void bitStuffing(char *input, char *output) {
+    int count = 0;
+    int j = 0;
+    
+    for (int i = 0; i < strlen(input); i++) {
+        // Copy the bit to output
+        output[j++] = input[i];
+
+        if (input[i] == '1') {
+            count++;
+            // After five consecutive 1's, insert a 0
+            if (count == 5) {
+                output[j++] = '0';
+                count = 0; // Reset count after stuffing
+            }
+        } else {
+            count = 0; // Reset count if a 0 is encountered
+        }
+    }
+    output[j] = '\0'; // Null terminate the output string
+}
+
+int main() {
+    char input[MAX_SIZE] = "111110101";  // Predefined binary input
+    char output[MAX_SIZE];
+
+    printf("Original input: %s\n", input);
+
+    bitStuffing(input, output);
+
+    printf("After bit stuffing: %s\n", output);
+
+    return 0;
+}
